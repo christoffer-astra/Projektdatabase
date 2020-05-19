@@ -1,0 +1,108 @@
+﻿@model IEnumerable<ProjektModel>
+@{
+    ViewData["Title"] = "Projektdatabasen";
+}
+
+<h2>Projektdatabasen</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektEvaluationStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektEvaluation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektEndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektFundingDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektProgression)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektLink)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.KlassifikationModels)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UddOmrModels)
+        </th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektEvaluationStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektEvaluation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektFundingDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektProgression)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjektLink)
+            </td>
+            <td>
+                @foreach (var klassifikation in item.KlassifikationModels)
+                {
+                    @Html.DisplayFor(modelItem => klassifikation.KlassifikationName)
+                    <br/>
+                }
+            </td>
+            <td>
+                @foreach (var UddOmr in item.UddOmrModels)
+                {
+                    @Html.DisplayFor(modelItem => UddOmr.UddOmrName)
+                    <br/>
+                }
+            </td>
+
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.UddOmrId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.UddOmrId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.UddOmrId })
+
+                </td>*@
+        </tr>
+    }
+</table>
