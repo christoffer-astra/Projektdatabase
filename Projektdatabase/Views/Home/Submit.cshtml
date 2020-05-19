@@ -1,40 +1,70 @@
-﻿@model IEnumerable<UddOmrModel>
+﻿@using System.Linq
+@model ProjektModel
 @{
-    ViewData["Title"] = "Projektdatabasen";
+    ViewData["Title"] = "Indsæt projekt";
 }
-
-<h2>Projektdatabasen</h2>
-
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UddOmrName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UddOmrId)
-        </th>
-        <th></th>
-    </tr>
-
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UddOmrName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UddOmrId)
-            </td>
-            @*<td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.UddOmrId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.UddOmrId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.UddOmrId })
-
-            </td>*@
-        </tr>
-    }
-</table>
+<form asp-action="Submit" asp-controller="Home" method="post">
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektName)
+        @Html.TextBoxFor(model => model.ProjektName)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektDescription)
+        @Html.TextBoxFor(model => model.ProjektDescription)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektStatus)
+        @Html.CheckBoxFor(model => model.ProjektStatus)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektEvaluationStatus)
+        @Html.CheckBoxFor(model => model.ProjektEvaluationStatus)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektFundingDescription)
+        @Html.TextBoxFor(model => model.ProjektFundingDescription)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektStartDate)
+        @Html.EditorFor(model => model.ProjektStartDate, new {@type = "date"})
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektEndDate)
+        @Html.EditorFor(model => model.ProjektEndDate, new {@type = "date"})
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektLink)
+        @Html.TextBoxFor(model => model.ProjektLink)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektProgression)
+        @Html.TextBoxFor(model => model.ProjektProgression)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektEvaluation)
+        @Html.TextBoxFor(model => model.ProjektEvaluation)
+    </ul>
+    <ul>
+        @for (int i = 0; i < Model.KlassifikationModels.Count; i++)
+        {
+            <li>
+                @Html.DisplayFor(m => m.KlassifikationModels[i].KlassifikationName)
+                @Html.CheckBoxFor(m => m.KlassifikationModels[i].IsChecked)
+                @Html.HiddenFor(m => m.KlassifikationModels[i].KlassifikationName)
+                @Html.HiddenFor(m => m.KlassifikationModels[i].KlassifikationId)
+            </li>
+        }
+    </ul>
+    <ul>
+        @for (int i = 0; i < Model.UddOmrModels.Count; i++)
+        {
+            <li>
+                @Html.DisplayFor(m => m.UddOmrModels[i].UddOmrName)
+                @Html.CheckBoxFor(m => m.UddOmrModels[i].IsChecked)
+                @Html.HiddenFor(m => m.UddOmrModels[i].UddOmrName)
+                @Html.HiddenFor(m => m.UddOmrModels[i].UddOmrId)
+            </li>
+        }
+    </ul>
+    <button type="submit" name="action">Tilføj</button>
+</form>

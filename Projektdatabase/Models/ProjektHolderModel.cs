@@ -8,6 +8,6 @@ namespace Projektdatabase.Models
     public class ProjektHolderModel
     {
         public int ProjektHolderId { get; set; }
-        public string Name { get; set; }
+        public string ProjektHolderName { get; set; }
     }
 }

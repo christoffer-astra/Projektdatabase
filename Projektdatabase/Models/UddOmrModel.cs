@@ -9,5 +9,6 @@ namespace Projektdatabase.Models
     {
         public int UddOmrId { get; set; }
         public string UddOmrName { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

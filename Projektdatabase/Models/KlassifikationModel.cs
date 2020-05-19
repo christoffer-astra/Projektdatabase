@@ -9,5 +9,6 @@ namespace Projektdatabase.Models
     {
         public int KlassifikationId { get; set; }
         public string KlassifikationName { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

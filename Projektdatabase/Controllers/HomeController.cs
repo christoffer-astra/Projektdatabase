@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Projektdatabase.Models;
 using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Projektdatabase.Persistence;
@@ -41,10 +42,11 @@ namespace Projektdatabase.Controllers
             var check = test[0].KlassifikationModels.ToList();
             return View(projekt);
         }
-        [HttpGet("submit")]
+        [HttpGet("create")]
         public IActionResult Submit()
         {
-            List<UddOmrModel> udds = _unitOfWork.Complete();
+            ProjektModel projekt = _unitOfWork.getProjektModel();
+            //List<UddOmrModel> udds = _unitOfWork.Complete();
             //List<UddOmrModel> uddOmr = _repository.GetAll(_connection);
             //int id = _repository.GetId("EUD", _connection);
             //UddOmrModel udd = _repository.Get(id, _connection);
@@ -55,13 +57,33 @@ namespace Projektdatabase.Controllers
             //{
             //    uddOmr = db.Query<UddOmrModel>("Select uddOmrId, uddOmrName FROM UddOmr").ToList();
             //}
-            return View(udds);
+            return View(projekt);
         }
 
-        [HttpPost("submit")]
-        public IActionResult Submit(Object model)
+        [HttpPost("create")]
+        public IActionResult Submit(ProjektModel projektModel)
         {
-            return View();
+            if (ModelState.IsValid)
+            {   Console.WriteLine(projektModel.KlassifikationModels.ToList()[0].KlassifikationName);
+                ProjektModel projekt =  new ProjektModel();
+                for (int i = 0; i < projektModel.KlassifikationModels.Count; i++) {
+                    if (!projektModel.KlassifikationModels[i].IsChecked)
+                    {
+                        projektModel.KlassifikationModels.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                int count = projektModel.KlassifikationModels.Count;
+                //projekt.KlassifikationModels = model.KlassifikationModels;
+                //string champ = "champ";
+                //champ += model.KlassifikationModels.ToList()[0].KlassifikationName;
+                //Console.WriteLine(champ);
+                return RedirectToAction("index");
+            }
+           
+            //ADD 
+            return View(projektModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

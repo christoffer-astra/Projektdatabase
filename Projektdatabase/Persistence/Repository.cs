@@ -36,7 +36,7 @@ namespace Projektdatabase.Persistence
             List<T> list = new List<T>();
             using (var connect = conn.CreateConnection())
             {
-                list = connect.Query<T>("Select uddOmrId, uddOmrName FROM UddOmr").ToList();
+                list = connect.Query<T>($"Select {_table}Id, {_table}Name FROM {_table}").ToList();
             }
 
             return list;

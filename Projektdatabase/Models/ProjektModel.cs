@@ -16,14 +16,15 @@ namespace Projektdatabase.Models
         public bool ProjektStatus { get; set; }
         [Display(Name = "Eksternt Evalueret")]
         public bool ProjektEvaluationStatus { get; set; }
-        [Display(Name = "Støtte Noter")]
+        [Display(Name = "Fond Noter")]
         public string ProjektFundingDescription { get; set; }
 
         [Display(Name = "Start Dato"), DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProjektStartDate { get; set; }
-
-        //public DateTime ProjektStartDate { get; set; }
         [Display(Name = "Slut Dato"), DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
         public DateTime ProjektEndDate { get; set; }
         [Display(Name = "Link")]
         public string ProjektLink { get; set; }
@@ -32,11 +33,14 @@ namespace Projektdatabase.Models
         [Display(Name = "Type")]
         public string ProjektProgression { get; set; }
         [Display(Name = "Uddannelses Område")]
-        public IEnumerable<UddOmrModel> UddOmrModels { get; set; }
-        //public IEnumerable<OmrModel> OmrModels { get; set; }
-        [Display(Name = "Klassifikation")]
-        public IEnumerable<KlassifikationModel> KlassifikationModels { get; set; }
-        //public IEnumerable<ProjektHolderModel> ProjektHolderModels { get; set; }
-        //public IEnumerable<DeltagendeInstModel> DeltagendeInstModels { get; set; }
+        public IList<UddOmrModel> UddOmrModels { get; set; }
+        [Display(Name = "Område")]
+        public IList<OmrModel> OmrModels { get; set; }
+        [Display(Name = "Klassifikation"), Required]
+        public IList<KlassifikationModel> KlassifikationModels { get; set; }
+        [Display(Name = "Projektholder")]
+        public IList<ProjektHolderModel> ProjektHolderModels { get; set; }
+        [Display(Name = "Deltagende Institutioner")]
+        public IList<DeltagendeInstModel> DeltagendeInstModels { get; set; }
     }
 }

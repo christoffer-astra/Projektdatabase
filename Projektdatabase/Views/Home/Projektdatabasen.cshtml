@@ -3,8 +3,6 @@
     ViewData["Title"] = "Projektdatabasen";
 }
 
-<h2>Projektdatabasen</h2>
-
 @*<p>
         @Html.ActionLink("Create New", "Create")
     </p>*@
@@ -46,63 +44,93 @@
         <th>
             @Html.DisplayNameFor(model => model.UddOmrModels)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OmrModels)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjektHolderModels)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeltagendeInstModels)
+        </th>
     </tr>
 
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektEvaluationStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektEvaluation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektEndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektFundingDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektProgression)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjektLink)
-            </td>
-            <td>
-                @foreach (var klassifikation in item.KlassifikationModels)
-                {
-                    @Html.DisplayFor(modelItem => klassifikation.KlassifikationName)
-                    <br/>
-                }
-            </td>
-            <td>
-                @foreach (var UddOmr in item.UddOmrModels)
-                {
-                    @Html.DisplayFor(modelItem => UddOmr.UddOmrName)
-                    <br/>
-                }
-            </td>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektStatus)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektEvaluationStatus)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektEvaluation)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektStartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektEndDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektFundingDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektProgression)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjektLink)
+    </td>
+    <td>
+        @foreach (var klassifikation in item.KlassifikationModels)
+        {
+            @Html.DisplayFor(modelItem => klassifikation.KlassifikationName)
+            <br />
+        }
+    </td>
+    <td>
+        @foreach (var uddOmr in item.UddOmrModels)
+        {
+            @Html.DisplayFor(modelItem => uddOmr.UddOmrName)
+            <br />
+        }
+    </td>
+    <td>
+        @foreach (var omr in item.OmrModels)
+        {
+            @Html.DisplayFor(modelItem => omr.OmrName)
+            <br />
+        }
+    </td>
+    <td>
+        @foreach (var deltagendeInst in item.DeltagendeInstModels)
+        {
+            @Html.DisplayFor(modelItem => deltagendeInst.DeltagendeInstName)
+            <br/>
+        }
+    </td>
+    <td>
+        @foreach (var projektHolder in item.ProjektHolderModels)
+        {
+            @Html.DisplayFor(modelItem => projektHolder.ProjektHolderName)
+            <br/>
+        }
+    </td>
 
-            @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.UddOmrId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.UddOmrId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UddOmrId })
+    @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.UddOmrId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.UddOmrId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.UddOmrId })
 
-                </td>*@
-        </tr>
+        </td>*@
+</tr>
     }
 </table>

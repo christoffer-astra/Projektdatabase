@@ -8,6 +8,6 @@ namespace Projektdatabase.Models
     public class DeltagendeInstModel
     {
         private int DeltagendeInstId { get; set; }
-        public string Name { get; set; }
+        public string DeltagendeInstName { get; set; }
     }
 }

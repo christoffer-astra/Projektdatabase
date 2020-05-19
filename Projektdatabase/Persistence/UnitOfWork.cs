@@ -49,21 +49,19 @@ namespace Projektdatabase.Persistence
         public IEnumerable<ProjektModel> RetrieveAllProjekts()
         {
             IEnumerable<ProjektModel> projekt = _projekt.GetAll(_connection);
-            foreach (var projektModel in projekt)
-            {
-                int id = projektModel.ProjektId;
-                using (var conn = _connection.CreateConnection())
-                {
-                    projektModel.KlassifikationModels = conn.Query<KlassifikationModel>(
-                        $"SELECT  k.klassifikationId, k.klassifikationName FROM ProjektKlassifikation as pk LEFT JOIN Klassifikation as k on pk.KlassifikationId = k.klassifikationId WHERE pk.projektId = {id} ");
-                    projektModel.UddOmrModels = conn.Query<UddOmrModel>(
-                        $"SELECT  k.uddOmrId, k.uddOmrName FROM ProjektUddOmr as pk LEFT JOIN UddOmr as k on pk.UddOmrId = k.uddOmrId WHERE pk.projektId = {id} ");
-                }
 
-
-            }
             return projekt;
         }
+
+        public ProjektModel getProjektModel()
+        {
+            ProjektModel projekt = new ProjektModel();
+            projekt.KlassifikationModels = _klassifikation.GetAll(_connection);
+            projekt.UddOmrModels = _uddOmr.GetAll(_connection);
+            return projekt;
+        }
+
+
 
         public void CheckAllOuterIds(IEnumerable<UddOmrModel> uddOmr, IEnumerable<OmrModel> omr, IEnumerable<KlassifikationModel> klassifikation,
             IEnumerable<DeltagendeInstModel> deltagendeInst)
