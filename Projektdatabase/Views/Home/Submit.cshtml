@@ -1,82 +1,152 @@
 ﻿@using System.Linq
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model ProjektModel
-@{
-    ViewData["Title"] = "Indsæt projekt";
-}
-<form asp-action="Submit" asp-controller="Home" method="post">
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektName)
-        @Html.TextBoxFor(model => model.ProjektName)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektDescription)
-        @Html.TextBoxFor(model => model.ProjektDescription)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektStatus)
-        @Html.CheckBoxFor(model => model.ProjektStatus)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektEvaluationStatus)
-        @Html.CheckBoxFor(model => model.ProjektEvaluationStatus)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektFundingDescription)
-        @Html.TextBoxFor(model => model.ProjektFundingDescription)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektStartDate)
-        @Html.EditorFor(model => model.ProjektStartDate, new {@type = "date"})
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektEndDate)
-        @Html.EditorFor(model => model.ProjektEndDate, new {@type = "date"})
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektLink)
-        @Html.TextBoxFor(model => model.ProjektLink)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektProgression)
-        @Html.TextBoxFor(model => model.ProjektProgression)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektEvaluation)
-        @Html.TextBoxFor(model => model.ProjektEvaluation)
-    </ul>
-    <ul>
-        @for (int i = 0; i < Model.KlassifikationModels.Count; i++)
-        {
-            <li>
-                @Html.DisplayFor(m => m.KlassifikationModels[i].KlassifikationName)
-                @Html.CheckBoxFor(m => m.KlassifikationModels[i].IsChecked)
-                @Html.HiddenFor(m => m.KlassifikationModels[i].KlassifikationName)
-                @Html.HiddenFor(m => m.KlassifikationModels[i].KlassifikationId)
-            </li>
-        }
-    </ul>
-    <ul>
-        @for (int i = 0; i < Model.UddOmrModels.Count; i++)
-        {
-            <li>
-                @Html.DisplayFor(m => m.UddOmrModels[i].UddOmrName)
-                @Html.CheckBoxFor(m => m.UddOmrModels[i].IsChecked)
-                @Html.HiddenFor(m => m.UddOmrModels[i].UddOmrName)
-                @Html.HiddenFor(m => m.UddOmrModels[i].UddOmrId)
-            </li>
-        }
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.OmrModels[0].OmrName)
-        @Html.TextBoxFor(model => model.OmrModels[0].OmrName)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.DeltagendeInstModels[0].DeltagendeInstName)
-        @Html.TextBoxFor(model => model.DeltagendeInstModels[0].DeltagendeInstName)
-    </ul>
-    <ul>
-        @Html.DisplayNameFor(model => model.ProjektHolderModels[0].ProjektHolderName)
-        @Html.TextBoxFor(model => model.ProjektHolderModels[0].ProjektHolderName)
-    </ul>
-    <button type="submit" name="action">Tilføj</button>
-</form>
+
+<div class="offset-sm-1">
+
+    @{ViewData["Title"] = "Indsæt projekt";}
+
+    <form asp-action="Submit" asp-controller="Home" method="post">
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.ProjektName, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektName, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektDescription, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektDescription, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektStatus, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.CheckBoxFor(model => model.ProjektStatus)
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektEvaluationStatus, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.CheckBoxFor(model => model.ProjektEvaluationStatus)
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektFundingDescription, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektFundingDescription, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektStartDate, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.ProjektStartDate, new { @type = "date" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektEndDate, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.ProjektEndDate, new { @type = "date" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektLink, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektLink, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektProgression, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektProgression, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+            @Html.LabelFor(model => model.ProjektEvaluation, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektEvaluation, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <fieldset class="form-group row">
+            <legend class="col-md-2">Uddannelsesområde</legend>
+            <div class="col-md-7">
+                @for (int i = 0; i < Model.KlassifikationModels.Count; i++)
+                {
+                    <div class="form-check">
+                        @Html.CheckBoxFor(model => model.KlassifikationModels[i].IsChecked, htmlAttributes: new { @class = "form-check-input" })
+                        @Html.DisplayFor(model => model.KlassifikationModels[i].KlassifikationName, new { htmlAttributes = new { @class = "form-check-label" } })
+                        @Html.HiddenFor(model => model.KlassifikationModels[i].KlassifikationName, new { htmlAttributes = new { @class = "form-check-label" } })
+                        @Html.HiddenFor(model => model.KlassifikationModels[i].KlassifikationId)
+                    </div>
+
+                }
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group row">
+            <legend class="col-md-2">Klassifikation</legend>
+            <div class="col-md-7">
+                @for (int i = 0; i < Model.UddOmrModels.Count; i++)
+                {
+                    <div class="form-check">
+                        @Html.CheckBoxFor(model => model.UddOmrModels[i].IsChecked, htmlAttributes: new { @class = "form-check-input" })
+                        @Html.DisplayFor(model => model.UddOmrModels[i].UddOmrName, new { htmlAttributes = new { @class = "form-check-label" } })
+                        @Html.HiddenFor(model => model.UddOmrModels[i].UddOmrName)
+                        @Html.HiddenFor(model => model.UddOmrModels[i].UddOmrId)
+                    </div>
+
+                }
+            </div>
+        </fieldset>
+
+        <div class="form-group row">
+
+
+            @Html.LabelFor(model => model.OmrModels[0].OmrName, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.OmrModels[0].OmrName, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+
+            @Html.LabelFor(model => model.DeltagendeInstModels[0].DeltagendeInstName, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.DeltagendeInstModels[0].DeltagendeInstName, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group row">
+
+
+            @Html.LabelFor(model => model.ProjektHolderModels[0].ProjektHolderName, htmlAttributes: new { @class = "col-form-label-lg col-md-2" })
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.ProjektHolderModels[0].ProjektHolderName, htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        </div>
+        <button type="submit" name="action">Tilføj</button>
+
+    </form>
+</div>

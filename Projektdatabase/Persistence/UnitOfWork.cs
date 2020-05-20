@@ -96,42 +96,59 @@ namespace Projektdatabase.Persistence
                     connection.Query(
                         $"INSERT INTO ProjektUddOmr (ProjektId, UddOmrId) VALUES ({projekt.ProjektId}, {uddOmr.UddOmrId})");
                 }
-                foreach (var Omr in projektModel.OmrModels)
+                foreach (var omr in projektModel.OmrModels)
                 {
-                    var exists = connection.ExecuteScalar<bool>($"select count(1) from Omr where OmrName = '{Omr.OmrName}'");
+                    var exists = connection.ExecuteScalar<bool>($"select count(1) from Omr where OmrName = '{omr.OmrName}'");
                     if (exists)
                     {
-                        int id = connection.QuerySingle<int>($"SELECT omrId from Omr where omrName = '{Omr.OmrName}'");
+                        int id = connection.QuerySingle<int>($"SELECT omrId from Omr where omrName = '{omr.OmrName}'");
                         connection.Query(
                             $"INSERT INTO ProjektOmr (projektId, omrId) VALUES ({projekt.ProjektId}, {id})");
                     }
                     else
                     {
-                        OmrModel omr = connection.QuerySingle<OmrModel>($"INSERT INTO Omr (omrName) OUTPUT INSERTED.[OmrId] VALUES ('{Omr.OmrName}')");
-                        int id = omr.OmrId;
+                        OmrModel omrModel = connection.QuerySingle<OmrModel>($"INSERT INTO Omr (omrName) OUTPUT INSERTED.[OmrId] VALUES ('{omr.OmrName}')");
+                        int id = omrModel.OmrId;
                         connection.Query(
                             $"INSERT INTO ProjektOmr (ProjektId, OmrId) VALUES ({projekt.ProjektId}, {id})");
                     }
                 }
                 foreach (var deltagendeInst in projektModel.DeltagendeInstModels)
                 {
-                    connection.Query(
-                        $"INSERT INTO ProjektDeltagendeInst (ProjektId, DeltagendeInstId) VALUES ({projekt.ProjektId}, {deltagendeInst.DeltagendeInstId})");
+                    var exists = connection.ExecuteScalar<bool>($"select count(1) from DeltagendeInst where deltagendeInstName = '{deltagendeInst.DeltagendeInstName}'");
+                    if (exists)
+                    {
+                        int id = connection.QuerySingle<int>($"SELECT deltagendeInstId from DeltagendeInst where deltagendeInstName = '{deltagendeInst.DeltagendeInstName}'"); connection.Query(
+                            $"INSERT INTO ProjektDeltagendeInst (ProjektId, DeltagendeInstId) VALUES ({projekt.ProjektId}, {deltagendeInst.DeltagendeInstId})");
+                    }
+                    else
+                    {
+                        DeltagendeInstModel deltagendeInstModel = connection.QuerySingle<DeltagendeInstModel>($"INSERT INTO DeltagendeInst (deltagendeInstName) OUTPUT INSERTED.[deltagendeInstId] VALUES ('{deltagendeInst.DeltagendeInstName}')");
+                        int id = deltagendeInstModel.DeltagendeInstId;
+                        connection.Query(
+                            $"INSERT INTO ProjektDeltagendeInst (ProjektId, DeltagendeInstId) VALUES ({projekt.ProjektId}, {id})");
+                    }
+                    
                 }
                 foreach (var projektHolder in projektModel.ProjektHolderModels)
                 {
-                    connection.Query(
-                        $"INSERT INTO ProjektProjektHolder (ProjektId, ProjektHolderId) VALUES ({projekt.ProjektId}, {projektHolder.ProjektHolderId})");
+                    var exists = connection.ExecuteScalar<bool>($"select count(1) from ProjektHolder where projektHolderName = '{projektHolder.ProjektHolderName}'");
+                    if (exists)
+                    {
+                        int id = connection.QuerySingle<int>($"SELECT projektHolderId from ProjektHolder where projektHolderName = '{projektHolder.ProjektHolderName}'"); connection.Query(
+                            $"INSERT INTO ProjektProjektHolder (ProjektId, ProjektHolderId) VALUES ({projekt.ProjektId}, {projektHolder.ProjektHolderId})");
+                    }
+                    else
+                    {
+                        ProjektHolderModel projektHolderModel = connection.QuerySingle<ProjektHolderModel>($"INSERT INTO ProjektHolder (projektHolderName) OUTPUT INSERTED.[ProjektHolderId] VALUES ('{projektHolder.ProjektHolderName}')");
+                        int id = projektHolderModel.ProjektHolderId;
+                        connection.Query(
+                            $"INSERT INTO ProjektProjektHolder (ProjektId, ProjektHolderId) VALUES ({projekt.ProjektId}, {id})");
+                    }
                 }
                 //TODO: Make actual transaction.
-                //TODO REFACTOR Dapper code: parametize, use correct query methods 
+                //TODO REFACTOR Dapper code: parameterize, use correct query methods, make repository generic methods
             }
         }
-
-        //MAKE METHODS THAT LOCATE ALL OUTER TABLE IDs IF EXIST, OTHERWISE CREATE NEW IDS
-
-        //STORE IDs in list for all conjunction models
-
-        //Begin transaction that enters data into Projekt and all conjunction tables.
     }
 }
