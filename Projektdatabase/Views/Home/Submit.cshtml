@@ -66,5 +66,17 @@
             </li>
         }
     </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.OmrModels[0].OmrName)
+        @Html.TextBoxFor(model => model.OmrModels[0].OmrName)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.DeltagendeInstModels[0].DeltagendeInstName)
+        @Html.TextBoxFor(model => model.DeltagendeInstModels[0].DeltagendeInstName)
+    </ul>
+    <ul>
+        @Html.DisplayNameFor(model => model.ProjektHolderModels[0].ProjektHolderName)
+        @Html.TextBoxFor(model => model.ProjektHolderModels[0].ProjektHolderName)
+    </ul>
     <button type="submit" name="action">Tilføj</button>
 </form>

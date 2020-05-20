@@ -45,45 +45,31 @@ namespace Projektdatabase.Controllers
         [HttpGet("create")]
         public IActionResult Submit()
         {
-            ProjektModel projekt = _unitOfWork.getProjektModel();
-            //List<UddOmrModel> udds = _unitOfWork.Complete();
-            //List<UddOmrModel> uddOmr = _repository.GetAll(_connection);
-            //int id = _repository.GetId("EUD", _connection);
-            //UddOmrModel udd = _repository.Get(id, _connection);
-            //uddOmr.Add(udd);
-            //Console.WriteLine(udd.UddOmrId.ToString()+udd.UddOmrName);
-            //List<UddOmrModel> uddOmr = new List<UddOmrModel>();
-            //using (IDbConnection db = new SqlConnection(_connectionString))
-            //{
-            //    uddOmr = db.Query<UddOmrModel>("Select uddOmrId, uddOmrName FROM UddOmr").ToList();
-            //}
+            ProjektModel projekt = _unitOfWork.GetProjektModel();
             return View(projekt);
         }
 
         [HttpPost("create")]
         public IActionResult Submit(ProjektModel projektModel)
         {
-            if (ModelState.IsValid)
-            {   Console.WriteLine(projektModel.KlassifikationModels.ToList()[0].KlassifikationName);
-                ProjektModel projekt =  new ProjektModel();
-                for (int i = 0; i < projektModel.KlassifikationModels.Count; i++) {
-                    if (!projektModel.KlassifikationModels[i].IsChecked)
-                    {
-                        projektModel.KlassifikationModels.RemoveAt(i);
-                        i--;
-                    }
-                }
-
-                int count = projektModel.KlassifikationModels.Count;
-                //projekt.KlassifikationModels = model.KlassifikationModels;
-                //string champ = "champ";
-                //champ += model.KlassifikationModels.ToList()[0].KlassifikationName;
-                //Console.WriteLine(champ);
-                return RedirectToAction("index");
+            if (!ModelState.IsValid) return View(projektModel);
+            
+            for (var i = 0; i < projektModel.KlassifikationModels.Count; i++) {
+                if (projektModel.KlassifikationModels[i].IsChecked) continue;
+                projektModel.KlassifikationModels.RemoveAt(i);
+                i--;
             }
-           
+            for (var i = 0; i < projektModel.UddOmrModels.Count; i++)
+            {
+                if (projektModel.UddOmrModels[i].IsChecked) continue;
+                projektModel.UddOmrModels.RemoveAt(i);
+                i--;
+            }
+
+            _unitOfWork.SubmitProjekt(projektModel);
+            return RedirectToAction("index");
+
             //ADD 
-            return View(projektModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

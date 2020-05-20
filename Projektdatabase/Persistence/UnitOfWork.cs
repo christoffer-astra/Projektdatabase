@@ -23,7 +23,7 @@ namespace Projektdatabase.Persistence
         private readonly IRepository<DeltagendeInstModel> _deltagendeInst;
         private readonly IRepository<ProjektKlassifikationModel> _projektKlassifikation;
         private readonly IRepository<ProjektUddOmrModel> _projektUddOmr;
-        private IProjektRepository _projekt;
+        private readonly IProjektRepository _projekt;
         public UnitOfWork(IDbConnectionFactory connection, IRepository<UddOmrModel> uddOmr, IProjektRepository projekt, 
             IRepository<OmrModel> omr, IRepository<DeltagendeInstModel> deltagendeInst, 
             IRepository<KlassifikationModel> klassifikation, IRepository<ProjektHolderModel> projektHolder, 
@@ -53,7 +53,7 @@ namespace Projektdatabase.Persistence
             return projekt;
         }
 
-        public ProjektModel getProjektModel()
+        public ProjektModel GetProjektModel()
         {
             ProjektModel projekt = new ProjektModel();
             projekt.KlassifikationModels = _klassifikation.GetAll(_connection);
@@ -61,18 +61,70 @@ namespace Projektdatabase.Persistence
             return projekt;
         }
 
-
-
-        public void CheckAllOuterIds(IEnumerable<UddOmrModel> uddOmr, IEnumerable<OmrModel> omr, IEnumerable<KlassifikationModel> klassifikation,
-            IEnumerable<DeltagendeInstModel> deltagendeInst)
+        public void SubmitProjekt(ProjektModel projektModel)
         {
-            List<int> uddOmrIds = new List<int>();
-            foreach (var uddOmrModel in uddOmr)
+            StringBuilder sqlBuilder = new StringBuilder();
+            string sql;
+            sqlBuilder.Append("INSERT INTO Projekt ([ProjektName], [ProjektDescription], [ProjektStatus], [ProjektEvaluationStatus], [ProjektFundingDescription],");
+            sqlBuilder.Append(" [ProjektStartDate], [ProjektEndDate], [ProjektLink], [ProjektEvaluation], [ProjektProgression])");
+            sqlBuilder.Append(" OUTPUT INSERTED.[ProjektId]");
+            sqlBuilder.Append(" VALUES (@projektName, @projektDescription, @projektStatus, @projektEvaluationStatus, @projektFundingDescription, @projektStartDate,");
+            sqlBuilder.Append(" @projektEndDate, @projektLink, @projektEvaluation, @projektProgression)");
+            sql = sqlBuilder.ToString();
+            using (IDbConnection connection = _connection.CreateConnection())
             {
-                _uddOmr.GetId(uddOmrModel.UddOmrName, _connection);
-                uddOmrIds.Add(uddOmrModel.UddOmrId);
-                _deltagendeInst.Get(2, _connection);
-                //METHOD TO RETRIEVE ALL OUTER IDS
+                ProjektModel projekt = connection.QuerySingle<ProjektModel>(sql, new
+                {
+                    projektModel.ProjektName,
+                    projektModel.ProjektDescription,
+                    projektModel.ProjektStatus,
+                    projektModel.ProjektEvaluationStatus,
+                    projektModel.ProjektFundingDescription,
+                    projektModel.ProjektStartDate,
+                    projektModel.ProjektEndDate,
+                    projektModel.ProjektLink,
+                    projektModel.ProjektEvaluation,
+                    projektModel.ProjektProgression
+                });
+                foreach (var klassifikation in projektModel.KlassifikationModels)
+                {
+                    connection.Query(
+                        $"INSERT INTO ProjektKlassifikation (ProjektId, KlassifikationId) VALUES ({projekt.ProjektId}, {klassifikation.KlassifikationId})");
+                }
+                foreach (var uddOmr in projektModel.UddOmrModels)
+                {
+                    connection.Query(
+                        $"INSERT INTO ProjektUddOmr (ProjektId, UddOmrId) VALUES ({projekt.ProjektId}, {uddOmr.UddOmrId})");
+                }
+                foreach (var Omr in projektModel.OmrModels)
+                {
+                    var exists = connection.ExecuteScalar<bool>($"select count(1) from Omr where OmrName = '{Omr.OmrName}'");
+                    if (exists)
+                    {
+                        int id = connection.QuerySingle<int>($"SELECT omrId from Omr where omrName = '{Omr.OmrName}'");
+                        connection.Query(
+                            $"INSERT INTO ProjektOmr (projektId, omrId) VALUES ({projekt.ProjektId}, {id})");
+                    }
+                    else
+                    {
+                        OmrModel omr = connection.QuerySingle<OmrModel>($"INSERT INTO Omr (omrName) OUTPUT INSERTED.[OmrId] VALUES ('{Omr.OmrName}')");
+                        int id = omr.OmrId;
+                        connection.Query(
+                            $"INSERT INTO ProjektOmr (ProjektId, OmrId) VALUES ({projekt.ProjektId}, {id})");
+                    }
+                }
+                foreach (var deltagendeInst in projektModel.DeltagendeInstModels)
+                {
+                    connection.Query(
+                        $"INSERT INTO ProjektDeltagendeInst (ProjektId, DeltagendeInstId) VALUES ({projekt.ProjektId}, {deltagendeInst.DeltagendeInstId})");
+                }
+                foreach (var projektHolder in projektModel.ProjektHolderModels)
+                {
+                    connection.Query(
+                        $"INSERT INTO ProjektProjektHolder (ProjektId, ProjektHolderId) VALUES ({projekt.ProjektId}, {projektHolder.ProjektHolderId})");
+                }
+                //TODO: Make actual transaction.
+                //TODO REFACTOR Dapper code: parametize, use correct query methods 
             }
         }
 

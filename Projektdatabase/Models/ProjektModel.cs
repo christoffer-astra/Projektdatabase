@@ -20,10 +20,10 @@ namespace Projektdatabase.Models
         public string ProjektFundingDescription { get; set; }
 
         [Display(Name = "Start Dato"), DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:2000-01-01}", ApplyFormatInEditMode = true)]
         public DateTime ProjektStartDate { get; set; }
         [Display(Name = "Slut Dato"), DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:2000-01-01}", ApplyFormatInEditMode = true)]
 
         public DateTime ProjektEndDate { get; set; }
         [Display(Name = "Link")]

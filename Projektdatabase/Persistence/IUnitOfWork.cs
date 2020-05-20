@@ -10,8 +10,9 @@ namespace Projektdatabase.Persistence
     {
         List<UddOmrModel> Complete();
         IEnumerable<ProjektModel> RetrieveAllProjekts();
-        ProjektModel getProjektModel();
+        ProjektModel GetProjektModel();
 
+        void SubmitProjekt(ProjektModel projektModel);
     }
 
 }
